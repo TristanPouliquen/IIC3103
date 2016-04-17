@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * PurchaseOrder
@@ -57,11 +58,11 @@ class PurchaseOrder
     private $client;
 
     /**
-     * @var string
+     * @var Product
      *
-     * @ORM\Column(name="sku", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="purchaseOrders")
      */
-    private $sku;
+    private $product;
 
     /**
      * @var int
@@ -92,7 +93,7 @@ class PurchaseOrder
     private $deliveredAt;
 
     /**
-     * @var array
+     * @var ArrayCollection
      *
      * @ORM\Column(name="deliveryDates", type="array")
      */
@@ -101,9 +102,9 @@ class PurchaseOrder
     /**
      * @var string
      *
-     * @ORM\Column(name="state", type="string", length=255)
+     * @ORM\Column(name="status", type="string", length=255)
      */
-    private $state;
+    private $status;
 
     /**
      * @var string
@@ -127,10 +128,54 @@ class PurchaseOrder
     private $notes;
 
     /**
+     * @var Bill
+     *
      * @ORM\OneToOne(targetEntity="Bill", inversedBy="purchaseOrder")
      */
     private $bill;
 
+    /**
+     * Summary function
+     */
+    public function getSummary()
+    {
+        $array = [];
+
+        $array['id'] = $this->id;
+        $array['estado'] = $this->status;
+        if ('rechazada' == $this->status) {
+            $array['rechazo'] = $this->rejectionMotive;
+        }
+        if ('cancelada' == $this->status) {
+            $array['cancelado'] = $this->cancelationMotive;
+        }
+        $array['canal'] = $this->channel;
+        $array['cantidad'] = $this->quantity;
+        $array['sku'] = $this->product->getSku();
+        $array['proveedor'] = $this->provider;
+        $array['precio'] = $this->precio;
+        $array['notas'] = $this->notes;
+        if (!$this->deliveryDates->isEmpty()) {
+            $array['fechas despachos'] = $this->deliveryDates->toArray();
+        }
+
+        return $array;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct($channel, $quantity, $product, $provider, $price, $notes = '')
+    {
+        $this->channel = $channel;
+        $this->quantity = $quantity;
+        $this->product = $product;
+        $this->provider = $provider;
+        $this->price = $price;
+        $this->notes = $notes;
+        $this->status = 'creada';
+        $this->deliveryDates = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -263,30 +308,6 @@ class PurchaseOrder
     }
 
     /**
-     * Set sku
-     *
-     * @param string $sku
-     *
-     * @return PurchaseOrder
-     */
-    public function setSku($sku)
-    {
-        $this->sku = $sku;
-
-        return $this;
-    }
-
-    /**
-     * Get sku
-     *
-     * @return string
-     */
-    public function getSku()
-    {
-        return $this->sku;
-    }
-
-    /**
      * Set quantity
      *
      * @param integer $quantity
@@ -383,27 +404,27 @@ class PurchaseOrder
     }
 
     /**
-     * Set state
+     * Set status
      *
-     * @param string $state
+     * @param string $status
      *
      * @return PurchaseOrder
      */
-    public function setState($state)
+    public function setStatus($status)
     {
-        $this->state = $state;
+        $this->status = $status;
 
         return $this;
     }
 
     /**
-     * Get state
+     * Get status
      *
      * @return string
      */
-    public function getState()
+    public function getStatus()
     {
-        return $this->state;
+        return $this->status;
     }
 
     /**
@@ -503,6 +524,30 @@ class PurchaseOrder
     }
 
     /**
+     * Set product
+     *
+     * @param Product $product
+     *
+     * @return PurchaseOrder
+     */
+    public function setProduct(Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \AppBundle\Entity\Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
      * Set deliveryDates
      *
      * @param array $deliveryDates
@@ -523,6 +568,18 @@ class PurchaseOrder
      */
     public function getDeliveryDates()
     {
+        return $this->deliveryDates;
+    }
+
+    /**
+    * Add deliveryDate
+    *
+    * @var \DateTime
+    */
+    public function addDeliveryDate($deliveryDate)
+    {
+        $this->deliveryDates->add($deliveryDate);
+
         return $this->deliveryDates;
     }
 }

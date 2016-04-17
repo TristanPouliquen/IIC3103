@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Product
@@ -34,6 +35,21 @@ class Product
      * @ORM\Column(name="costs", type="float")
      */
     private $costs;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="PurchaseOrder", mappedBy="product")
+     */
+    private $purchaseOrders;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->purchaseOrders = new ArrayCollection();
+    }
 
 
     /**
@@ -92,5 +108,39 @@ class Product
     public function getCosts()
     {
         return $this->costs;
+    }
+
+    /**
+     * Add purchaseOrder
+     *
+     * @param \AppBundle\Entity\PurchaseOrder $purchaseOrder
+     *
+     * @return Product
+     */
+    public function addPurchaseOrder(\AppBundle\Entity\PurchaseOrder $purchaseOrder)
+    {
+        $this->purchaseOrders[] = $purchaseOrder;
+
+        return $this;
+    }
+
+    /**
+     * Remove purchaseOrder
+     *
+     * @param \AppBundle\Entity\PurchaseOrder $purchaseOrder
+     */
+    public function removePurchaseOrder(\AppBundle\Entity\PurchaseOrder $purchaseOrder)
+    {
+        $this->purchaseOrders->removeElement($purchaseOrder);
+    }
+
+    /**
+     * Get purchaseOrders
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPurchaseOrders()
+    {
+        return $this->purchaseOrders;
     }
 }
