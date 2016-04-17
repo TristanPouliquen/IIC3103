@@ -92,6 +92,13 @@ class PurchaseOrder
     private $deliveredAt;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="deliveryDates", type="array")
+     */
+    private $deliveryDates;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="state", type="string", length=255)
@@ -493,5 +500,29 @@ class PurchaseOrder
     public function getBill()
     {
         return $this->bill;
+    }
+
+    /**
+     * Set deliveryDates
+     *
+     * @param array $deliveryDates
+     *
+     * @return PurchaseOrder
+     */
+    public function setDeliveryDates($deliveryDates)
+    {
+        $this->deliveryDates = $deliveryDates;
+
+        return $this;
+    }
+
+    /**
+     * Get deliveryDates
+     *
+     * @return array
+     */
+    public function getDeliveryDates()
+    {
+        return $this->deliveryDates;
     }
 }
