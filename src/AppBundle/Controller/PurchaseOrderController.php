@@ -20,7 +20,7 @@ class PurchaseOrderController extends Controller
 
     /**
      * Get summary of PurchaseOrder
-     * @Route("obtener/{id}", requirements={"id" = "\d+"})
+     * @Route("/obtener/{id}", requirements={"id" = "\d+"})
      */
     public function getAction(Request $request, PurchaseOrder $purchaseOrder)
     {
@@ -96,7 +96,7 @@ class PurchaseOrderController extends Controller
 
     /**
      * Delete a PurchaseOrder
-     * @Route("anular/{id}", requirements={"id" = "\d+"})
+     * @Route("/anular/{id}", requirements={"id" = "\d+"})
      * @Method("DELETE")
      */
     public function cancelAction(Request $request, PurchaseOrder $purchaseOrder)
@@ -113,7 +113,7 @@ class PurchaseOrderController extends Controller
 
     /**
      * Send the product of the PurchaseOrder
-     * @Route("despachar/{id}", requirements={"id" = "\d+"})
+     * @Route("/despachar/{id}", requirements={"id" = "\d+"})
      */
     public function sendAction(Request $request, PurchaseOrder $purchaseOrder)
     {

@@ -36,17 +36,6 @@ class Account
     private $amount;
 
     /**
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="originAccount")
-     */
-    private $originTransactions;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="destinationAccount")
-     */
-    private $destinationTransactions;
-
-
-    /**
      * Get id
      *
      * @return int

@@ -43,15 +43,43 @@ class Transaction
     private $amount;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Account", inversedBy="originTransactions")
+     * @var string
+     *
+     * @ORM\Column(name="originAccount", type="string", length=255)
      */
     private $originAccount;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Account", inversedBy="destinationTransactions")
+     * @var string
+     *
+     * @ORM\Column(name="destinationAccount", type="string", length=255)
      */
     private $destinationAccount;
 
+    /**
+     * Array summary of the transaction
+     */
+    public function getSummary()
+    {
+        $array = [];
+
+        $array['id'] = $this->id;
+        $array['monto'] = $this->amount;
+        $array['origen'] = $this->originAccount;
+        $array['destino'] = $this->destinationAccount;
+
+        return $array;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct($amount, $origin, $destination)
+    {
+        $this->amount = $amount;
+        $this->origin = $origin;
+        $this->destination = $destination;
+    }
 
     /**
      * Get id
@@ -138,11 +166,11 @@ class Transaction
     /**
      * Set originAccount
      *
-     * @param \AppBundle\Entity\Account $originAccount
+     * @param string $originAccount
      *
      * @return Transaction
      */
-    public function setOriginAccount(\AppBundle\Entity\Account $originAccount = null)
+    public function setOriginAccount($originAccount)
     {
         $this->originAccount = $originAccount;
 
@@ -152,7 +180,7 @@ class Transaction
     /**
      * Get originAccount
      *
-     * @return \AppBundle\Entity\Account
+     * @return string
      */
     public function getOriginAccount()
     {
@@ -162,11 +190,11 @@ class Transaction
     /**
      * Set destinationAccount
      *
-     * @param \AppBundle\Entity\Account $destinationAccount
+     * @param string $destinationAccount
      *
      * @return Transaction
      */
-    public function setDestinationAccount(\AppBundle\Entity\Account $destinationAccount = null)
+    public function setDestinationAccount($destinationAccount)
     {
         $this->destinationAccount = $destinationAccount;
 
@@ -176,7 +204,7 @@ class Transaction
     /**
      * Get destinationAccount
      *
-     * @return \AppBundle\Entity\Account
+     * @return string
      */
     public function getDestinationAccount()
     {
