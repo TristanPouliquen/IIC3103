@@ -1,4 +1,4 @@
-# IIC3103-Proyecto10
+# IIC3103 - Los cuates del Tequila
 
 ## Project installation
 
