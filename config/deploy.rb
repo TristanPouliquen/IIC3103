@@ -14,3 +14,17 @@ set :linked_files, ["app/config/parameters.yml"]
 
 # Default value for linked_dirs is []
 set :linked_dirs, ["vendor", "var/logs"]
+
+set :file_permissions_paths, ["var/logs", "var/cache"]
+set :file_permissions_users, ["www-data"]
+set :permission_method, :acl
+
+namespace :deploy do
+  task :migrate do
+  	on roles(:all) do
+    	symfony_console('doctrine:migrations:migrate', '--no-interaction')
+    end
+  end
+end
+
+after 'deploy:updated', 'deploy:migrate'
