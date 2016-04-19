@@ -1,0 +1,21 @@
+{
+  "name": "IIC3103-Proyecto10",
+  "version": "0.0.1",
+  "homepage": "https://github.com/TristanPouliquen/IIC3103-Proyecto10",
+  "authors": [
+    "TristanPouliquen <tristan.pouliquen@yahoo.fr>"
+  ],
+  "description": "Project for IIC3103 Group 10",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  }
+}
