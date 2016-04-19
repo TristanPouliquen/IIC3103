@@ -48,6 +48,7 @@ class PurchaseOrderController extends Controller
 
         $product = $this->get('app.repository.product')->findOneBySku($sku);
 
+
         if (empty($product)) {
             return new Response('No product found for this SKU', 400);
         }
